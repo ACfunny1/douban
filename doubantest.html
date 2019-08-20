@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0">
+    <style type="text/css">
+    	@font-face {
+  			font-family: 'iconfont';  /* project id 1245165 */
+  			src: url('https://at.alicdn.com/t/font_1245165_i9znul68cmp.eot');
+  			src: url('https://at.alicdn.com/t/font_1245165_i9znul68cmp.eot?#iefix') format('			embedded-opentype'),
+  			url('https://at.alicdn.com/t/font_1245165_i9znul68cmp.woff2') format('woff2'),
+  			url('https://at.alicdn.com/t/font_1245165_i9znul68cmp.woff') format('woff'),
+  			url('https://at.alicdn.com/t/font_1245165_i9znul68cmp.ttf') format('truetype'),
+  			url('https://at.alicdn.com/t/font_1245165_i9znul68cmp.svg#iconfont') format('svg');
+}
+    	* {
+    		margin: 0;
+    		padding: 0;
+    		box-sizing: border-box;
+    	}
+        /*隐藏滚动条没有做呢*/
+    	html,body {
+    		height: 100%;
+    	}
+    	main {
+    		width: 100%;
+    		height: 92%
+    	}
+    	footer {
+    		position: absolute;
+            position: fixed;
+            z-index: 99;
+    		bottom: 0;
+    		display: flex;
+    		flex-direction: row;
+    		width: 100%;
+    		padding: 5px 5px;
+    		justify-content: center;
+    		border-top: 2px solid rgb(233,233,233);
+            background-color: rgb(255,255,255)
+    	}
+    	footer>div {
+    		display: flex;
+    		flex-direction: column;
+    		font-family: 'iconfont';
+    		text-align: center;
+    	}
+    	footer div:nth-child(1) {
+    		margin-right: 21%;
+    	}
+    	footer div:nth-child(3) {
+    		margin-left: 21%;
+    	}
+        .active {
+            color: rgb(198,94,37);
+        }
+
+
+        .oumei,.search {
+            display: none;
+        }
+        main div div img {
+            width: 100px;
+            float: left;
+            margin-left: 5px;
+        }
+        main>div>div {
+            margin: 10px 5px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgb(233,233,233)
+        }
+        main>div>div::after {
+            content: '';
+            display: block;
+            clear: both;
+        }
+
+        ul {
+            padding-top: 10px;
+            margin-left: 123px;
+        }
+        p,h3 {
+            margin-bottom: 5px;
+        }
+        p {
+            font-size: 15px;
+        }
+    </style>
+</head>
+<body>
+	<main>
+		<div class="bangdan">
+            <div>
+                <img src="http://img3.doubanio.com/view/photo/s_ratio_poster/public/p480747492.jpg">
+                <ul>
+                    <h3>肖生克的救赎</h3>
+                    <p>9.2分/3000收藏</p>
+                    <p>2011/剧情</p>
+                    <p>导演:王威</p>
+                    <p>主演:王威,吸烟</p> 
+                </ul>
+            </div>
+            <div>
+                <img src="http://img3.doubanio.com/view/photo/s_ratio_poster/public/p480747492.jpg">
+                <ul>
+                    <h3>肖生克的救赎</h3>
+                    <p>9.2分/3000收藏</p>
+                    <p>2011/剧情</p>
+                    <p>导演:王威</p>
+                    <p>主演:王威,吸烟</p> 
+                </ul>
+            </div>
+            <div>
+                <img src="http://img3.doubanio.com/view/photo/s_ratio_poster/public/p480747492.jpg">
+                <ul>
+                    <h3>肖生克的救赎</h3>
+                    <p>9.2分/3000收藏</p>
+                    <p>2011/剧情</p>
+                    <p>导演:王威</p>
+                    <p>主演:王威,吸烟</p> 
+                </ul>
+            </div>
+            <div>
+                <img src="http://img3.doubanio.com/view/photo/s_ratio_poster/public/p480747492.jpg">
+                <ul>
+                    <h3>肖生克的救赎</h3>
+                    <p>9.2分/3000收藏</p>
+                    <p>2011/剧情</p>
+                    <p>导演:王威</p>
+                    <p>主演:王威,吸烟</p> 
+                </ul>
+            </div>
+            <div>
+                <img src="http://img3.doubanio.com/view/photo/s_ratio_poster/public/p480747492.jpg">
+                <ul>
+                    <h3>肖生克的救赎</h3>
+                    <p>9.2分/3000收藏</p>
+                    <p>2011/剧情</p>
+                    <p>导演:王威</p>
+                    <p>主演:王威,吸烟</p> 
+                </ul>
+            </div>
+        </div>
+		<div class="oumei">2</div>
+		<div class="search">3</div>
+	</main>
+	<footer>
+		<div id="btn_bangdan">&#xe6f1;<span>榜单</span></div>
+		<div id="btn_oumei">&#xe6af;<span>欧美</span></div>
+		<div id="btn_search">&#xe7b7;<span>搜索</span></div>
+	</footer>
+
+    <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.js"></script>
+    <script type="text/javascript">
+        var index = 20
+    	/*$.ajax({
+    		dataType:'jsonp',
+    		url:'https://douban.uieee.com/v2/movie/top250',
+    		type:'GET',
+    		data:{
+    			start:0,
+    			count:5
+    		}
+    	}).done(function(ret){
+    		console.log(ret)
+            setMovie(ret)
+    	}).fail(function(){
+    		console.log('error')
+    	})*/
+
+    	/*底部按钮绑定事件*/
+    	$('#btn_bangdan').on('click',function(){
+            $('.bangdan').show().siblings().hide();
+            $('#btn_bangdan').addClass('active').siblings().removeClass('active')
+    	})
+    	$('#btn_oumei').on('click',function(){
+    		$('.oumei').show().siblings().hide();
+            $('#btn_oumei').addClass('active').siblings().removeClass('active')
+    	})
+    	$('#btn_search').on('click',function(){
+    		$('.search').show().siblings().hide();
+            $('#btn_search').addClass('active').siblings().removeClass('active')
+    	})
+
+        function setMovie(data){
+            var movieStyle = `            <div>
+                <img src="http://img3.doubanio.com/view/photo/s_ratio_poster/public/p480747492.jpg">
+                <ul>
+                    <h3>肖生克的救赎</h3>
+                    <p>9.2分/3000收藏</p>
+                    <p>2011/剧情</p>
+                    <p>导演:王威</p>
+                    <p>主演:王威,吸烟</p> 
+                </ul>
+            </div>`
+            data.subjects.forEach(function(e){
+                $(movieStyle).appendTo('.bangdan').find('img').attr('src',e.images.small)
+            })
+        }
+    </script>
+</body>
+</html>
