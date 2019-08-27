@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0">
+    <style type="text/css">
+        @font-face {
+            font-family: 'iconfont';  /* project id 1245165 */
+            src: url('https://at.alicdn.com/t/font_1245165_apfqx1qtdpq.eot');
+            src: url('https://at.alicdn.com/t/font_1245165_apfqx1qtdpq.eot?#iefix') format('          embedded-opentype'),
+            url('https://at.alicdn.com/t/font_1245165_apfqx1qtdpq.woff2') format('woff2'),
+            url('https://at.alicdn.com/t/font_1245165_apfqx1qtdpq.woff') format('woff'),
+            url('https://at.alicdn.com/t/font_1245165_apfqx1qtdpq.ttf') format('truetype'),
+            url('https://at.alicdn.com/t/font_1245165_apfqx1qtdpq.svg#iconfont') format('svg');
+        }
+    	* {
+    		margin: 0;
+    		padding: 0;
+    		box-sizing: border-box;
+    	}
+        /*隐藏滚动条没有做呢*/
+    	html,body {
+    		height: 100%;
+    	}
+        body {
+            position: relative;
+        }
+    	main {
+    		width: 100%;
+            height: 100%
+        }
+    	footer {
+    		position: absolute;
+            position: fixed;
+            z-index: 99;
+    		bottom: 0;
+    		display: flex;
+    		flex-direction: row;
+    		width: 100%;
+    		padding: 5px 5px;
+    		justify-content: center;
+    		border-top: 2px solid rgb(233,233,233);
+            background-color: rgb(255,255,255)
+    	}
+    	footer>div {
+    		display: flex;
+    		flex-direction: column;
+    		font-family: 'iconfont';
+    		text-align: center;
+    	}
+    	footer div:nth-child(1) {
+    		margin-right: 21%;
+    	}
+    	footer div:nth-child(3) {
+    		margin-left: 21%;
+    	}
+        .active {
+            color: rgb(198,94,37);
+        }
+
+
+        .beimei,.search,.bangdan {
+            display: none;
+        }
+        main div div img {
+            width: 100px;
+            float: left;
+            margin-left: 5px;
+        }
+        main>div>div {
+            margin: 10px 5px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgb(233,233,233);
+        }
+        main>div>div::after {
+            content: '';
+            display: block;
+            clear: both;
+        }
+
+        ul {
+            padding-top: 10px;
+            margin-left: 123px;
+        }
+        p,h3 {
+            margin-bottom: 5px;
+        }
+        p {
+            font-size: 15px;
+        }
+        .loadingFont {
+            font-family: 'iconfont';
+            display: inline-block;
+            animation: 1s rotate linear infinite;
+        }
+        @keyframes rotate {
+            0% {transform: rotate(0deg);}
+            100% {transform: rotate(360deg);}
+        }
+        .loading {
+            position: fixed;
+            left: 0px;
+            bottom: 45px;
+            z-index: 99;
+            text-align: center;
+            font-size: 20px;
+            width: 100%;
+            background-color: rgb(255,255,255);
+        }
+
+        .rank {
+        	font-size: 10px;
+        }
+
+        .search {
+        	height: 150px;
+        }
+        .searchInput {
+        	position: absolute;
+        	left: 32px;
+        	top: 51px;
+        	width: 80%;
+        	height: 50px;
+        	font-size: 16px;
+        }
+
+        button {
+        	position: absolute;
+        	left: 158px;
+        	top: 120px;
+        }
+    </style>
+</head>
+<body>
+	<main>
+		<div class="bangdan">
+            <!--<div>
+                <img src="http://img3.doubanio.com/view/photo/s_ratio_poster/public/p480747492.jpg">
+                <ul>
+                    <h3>肖生克的救赎<span class="rank">排名:1</span></h3>
+                    <p class="movieScore">9.2分/3000收藏</p>
+                    <p class="movieYear">2011/剧情</p>
+                    <p class="movieDirector">导演:王威</p>
+                    <p class="mocieActor">主演:王威,吸烟</p> 
+                </ul>
+            </div>  -->  
+        </div>
+		<div class="beimei"></div>
+		<div class="search">
+			<input type="text" name="searchInput" class="searchInput" placeholder="输入城市名称查询正在上映的电影">
+			<div>
+				<button>查询</button>
+			</div>
+		</div>
+	</main>
+    <p class="loading"><span class="loadingFont">&#xe73c;</span></p>
+	<footer>
+		<div id="btn_bangdan">&#xe6f1;<span>榜单</span></div>
+		<div id="btn_beimei">&#xe6af;<span>北美</span></div>
+		<div id="btn_search">&#xe7b7;<span>搜索</span></div>
+	</footer>
+
+
+
+	<script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.js"></script>
+	<script type="text/javascript">
+		var startIndex = 0
+		var startUsIndex = 0
+		btnClick()
+		/*$("#btn_bangdan").trigger("click")*/
+		$("#btn_search").trigger("click")
+		/*start()*/
+		var load = true
+
+		/*$(window).on('scroll',function(){
+			if(!load){
+				return
+			}
+			if (isScrollBottom() == true) {
+				start()
+			}
+		})*/
+
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////                                                                                       ////
+////                                                                                       ////
+////       top250                                                                          ////
+////                                                                                       ////
+////                                                                                       ////
+////                                                                                       ////
+///////////////////////////////////////////////////////////////////////////////////////////////
+		function start(){
+			getDate(function(data){
+				console.log(data)
+				$.each(data.subjects,function(idx,value){
+					$node = loadingMovie(value)
+					$node.appendTo('.bangdan')
+				})
+			})
+			var load = false
+		}
+	
+		function getDate(callback) {
+			$('.loading').show()
+			$.ajax({
+				url: 'https://douban.uieee.com/v2/movie/top250',
+				dataType: 'jsonp',
+				data: {
+					start: startIndex,
+					count: 5
+				}
+			}).done(function(ret){
+				callback(ret)
+				$('.loading').hide()
+				startIndex +=5
+			})
+		}
+
+		function btnClick(){
+			$('#btn_bangdan').on('click',function(){
+				$('.bangdan').show().siblings().hide()
+				$('#btn_bangdan').addClass('active').siblings().removeClass('active')
+			})
+
+			$('#btn_beimei').on('click',function(){
+    			$('.beimei').show().siblings().hide();
+            	$('#btn_beimei').addClass('active').siblings().removeClass('active')
+        		
+        		if ($('.beimei').children().length<=5) {
+        			usBoxStart()
+        		}
+        		
+    		})
+
+    		$('#btn_search').on('click',function(){
+    			$('.search').show().siblings().hide();
+            	$('#btn_search').addClass('active').siblings().removeClass('active')
+    		})
+		}
+
+		function loadingMovie(ret){
+			var tpl = ''
+			tpl += '<div>'
+			tpl += '<img src='+ret.images.small+'>'
+			tpl += '<ul>'
+			tpl += '<h3>'+ret.title+'</h3>'
+			tpl += '<p class="movieScore">'+ret.rating.average+'分/'+ret.collect_count+'收藏</p>'
+			tpl += '<p class="movieYear">'+ret.year+'/'+ret.genres.join('/')+'剧情</p>'
+			tpl += '<p class="movieDirector">导演:'+dName().join('/')+'</p>'
+			tpl += '<p class="mocieActor">主演:'+aName().join('/')+'</p>'
+			tpl += '</ul>'
+			tpl += '</div>'
+
+			return $(tpl)
+
+            function dName(){
+            	var d_name = []
+            	ret.directors.forEach(function(e){
+            		d_name.push(e.name)
+            	})
+            	return d_name
+            }
+            function aName(){
+                var a_name = []
+                ret.casts.forEach(function(e){
+                     a_name.push(e.name)
+                })
+                 return a_name
+            }
+		}
+
+		function isScrollBottom(){
+			var winScrollTop = $(window).scrollTop()
+			var winHeight = $(window).height()
+			var listHeight = Math.floor($('.bangdan').height())
+			if(winHeight+winScrollTop == listHeight+20 || 
+                winHeight+winScrollTop == listHeight+21){
+				return true
+			}else{
+				return false
+			}
+		}
+////////////////////////////////////////////////////////////////////////////////////////////////////                                                                                       ////
+////                                                                                       ////
+////     北美最新排行榜                                                                     ////
+////                                                                                       ////
+////                                                                                       ////
+////                                                                                       ////
+///////////////////////////////////////////////////////////////////////////////////////////////
+//北美开始
+
+
+		function usBoxStart(){
+			getUsDate(function(data){
+				console.log(data)
+				$.each(data.subjects,function(idx,value){
+					var newValue = value.subject
+					$node = loadingUsMovie(value)
+					$node.appendTo('.beimei')
+				})
+			})
+			var load = false
+		}
+
+
+		function getUsDate(callback) {
+			$('.loading').show()
+			$.ajax({
+				url: 'https://douban.uieee.com/v2/movie/us_box',
+				dataType: 'jsonp',
+
+			}).done(function(ret){
+				callback(ret)
+				$('.loading').hide()
+			})
+		}
+
+		function loadingUsMovie(ret){
+			var tpl = ''
+			tpl += '<div>'
+			tpl += '<img src='+ret.subject.images.small+'>'
+			tpl += '<ul>'
+			tpl += '<h3>'+ret.subject.title+'<span class="rank">   排名:'+ret.rank+'</span></h3>'
+			tpl += '<p class="movieScore">'+ret.subject.rating.average+'分/'+ret.subject.collect_count+'收藏</p>'
+			tpl += '<p class="movieYear">'+ret.subject.year+'/'+ret.subject.genres.join('/')+'剧情</p>'
+			tpl += '<p class="movieDirector">导演:'+dName().join('/')+'</p>'
+			tpl += '<p class="mocieActor">主演:'+aName().join('/')+'</p>'
+			tpl += '</ul>'
+			tpl += '</div>'
+
+			return $(tpl)
+
+            function dName(){
+            	var d_name = []
+            	ret.subject.directors.forEach(function(e){
+            		d_name.push(e.name)
+            	})
+            	return d_name
+            }
+            function aName(){
+                var a_name = []
+                ret.subject.casts.forEach(function(e){
+                     a_name.push(e.name)
+                })
+                 return a_name
+            }
+		}
+////////////////////////////////////////////////////////////////////////////////////////////////////                                                                                       ////
+////                                                                                       ////
+////        搜索页面                                                                        ////
+////                                                                                       ////
+////                                                                                       ////
+////                                                                                       ////
+///////////////////////////////////////////////////////////////////////////////////////////////
+
+		function getCityDate(callback){
+				$('.loading').show()
+				$.ajax({
+					url: 'https://douban-api.uieee.com/v2/movie/in_theaters',
+					dataType: 'jsonp',
+					data: {
+						city: '无锡'
+					}
+				}).done(function(ret){
+					callback(ret)
+					$('.loading').hide()
+				})
+			}
+	</script>
+</body>
+</html>

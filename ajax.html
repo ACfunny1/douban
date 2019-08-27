@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<meta charset="utf-8">
+</head>
+<body>
+	<script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.js"></script>
+	<script type="text/javascript">
+		$.ajax({
+			url: 'https://douban-api.uieee.com/v2/movie/in_theaters',
+			dataType: 'jsonp',
+			data: {
+				city: '北京'
+			}
+		}).done(function(ret){
+			console.log(ret)
+		})
+	</script>
+</body>
+</html>
