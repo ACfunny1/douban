@@ -114,22 +114,26 @@
         }
 
         .search {
-        	height: 150px;
+        	height: 100%;
+            border-bottom: 2px solid rgb(233,233,233)
         }
         .searchInput {
-        	position: absolute;
+        	/*position: absolute;
         	left: 32px;
-        	top: 51px;
+        	top: 51px;*/
+            margin: 10px 34px;
         	width: 80%;
         	height: 50px;
         	font-size: 16px;
         }
 
         button {
-        	position: absolute;
-        	left: 158px;
-        	top: 120px;
+            width: 100px;
+            height: 30px;
+            margin-left: 129px;
         }
+
+        
     </style>
 </head>
 <body>
@@ -148,10 +152,8 @@
         </div>
 		<div class="beimei"></div>
 		<div class="search">
-			<input type="text" name="searchInput" class="searchInput" placeholder="输入城市名称查询正在上映的电影">
-			<div>
-				<button>查询</button>
-			</div>
+                <input type="text" name="searchInput" class="searchInput" placeholder="输入城市名称查询正在上映的电影">
+                <button id="btn_citySearch">查询</button>
 		</div>
 	</main>
     <p class="loading"><span class="loadingFont">&#xe73c;</span></p>
@@ -167,20 +169,21 @@
 	<script type="text/javascript">
 		var startIndex = 0
 		var startUsIndex = 0
+        var cityName = $('.searchInput').val()
 		btnClick()
-		/*$("#btn_bangdan").trigger("click")*/
-		$("#btn_search").trigger("click")
-		/*start()*/
+		$("#btn_bangdan").trigger("click")
+		start()
+        btnSearch()
 		var load = true
 
-		/*$(window).on('scroll',function(){
+		$(window).on('scroll',function(){
 			if(!load){
 				return
 			}
 			if (isScrollBottom() == true) {
 				start()
 			}
-		})*/
+		})
 
 
 
@@ -355,6 +358,20 @@
 ////                                                                                       ////
 ////                                                                                       ////
 ///////////////////////////////////////////////////////////////////////////////////////////////
+    
+        function startCity(){
+            getCityDate(function(data){
+                //console.log(data)
+                $.each(data.subjects,function(idx,value){
+                    //console.log(value)
+                    $node = loadingCityMovie(value)
+                    console.log($node)
+                    $node.appendTo('.search')
+                })
+            })
+        }
+
+
 
 		function getCityDate(callback){
 				$('.loading').show()
@@ -362,13 +379,52 @@
 					url: 'https://douban-api.uieee.com/v2/movie/in_theaters',
 					dataType: 'jsonp',
 					data: {
-						city: '无锡'
+						city: cityName
 					}
 				}).done(function(ret){
 					callback(ret)
 					$('.loading').hide()
 				})
 			}
+
+        function loadingCityMovie(ret){
+            var tpl = ''
+            tpl += '<div>'
+            tpl += '<img src='+ret.images.small+'>'
+            tpl += '<ul>'
+            tpl += '<h3>'+ret.title+'</h3>'
+            tpl += '<p class="movieScore">'+ret.rating.average+'分/'+ret.collect_count+'收藏</p>'
+            tpl += '<p class="movieYear">'+ret.year+'/'+ret.genres.join('/')+'剧情</p>'
+            tpl += '<p class="movieDirector">导演:'+dName().join('/')+'</p>'
+            tpl += '<p class="mocieActor">主演:'+aName().join('/')+'</p>'
+            tpl += '</ul>'
+            tpl += '</div>'
+
+            return $(tpl)
+
+            function dName(){
+                var d_name = []
+                ret.directors.forEach(function(e){
+                    d_name.push(e.name)
+                })
+                return d_name
+            }
+            function aName(){
+                var a_name = []
+                ret.casts.forEach(function(e){
+                     a_name.push(e.name)
+                })
+                 return a_name
+            }
+        }
+
+        function btnSearch(){
+            $('#btn_citySearch').on('click',function(){
+                var cityName = $('.searchInput').val()
+                console.log(cityName)
+                startCity()
+            })
+        }
 	</script>
 </body>
 </html>
